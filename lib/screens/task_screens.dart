@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/model/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/model/tasks_data.dart';
 import 'package:todo_list/screens/add_task_screen.dart';
 import 'package:todo_list/widgets/task_task.dart';
 
@@ -9,17 +10,18 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(
-      name: 'Buy milk',
-    ),
-    Task(name: 'Buy sheep'),
-    Task(name: 'Buy goat'),
-    Task(name: 'Buy yiou'),
-    Task(name: 'Buy life'),
-  ];
+  // List<Task> tasks = [
+  //   Task(
+  //     name: 'Buy milk',
+  //   ),
+  //   Task(name: 'Buy sheep'),
+  //   Task(name: 'Buy goat'),
+  //   Task(name: 'Buy yiou'),
+  //   Task(name: 'Buy life'),
+  // ];
   @override
   Widget build(BuildContext context) {
+    var data = Provider.of<TaskData>(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.lightBlueAccent,
@@ -34,15 +36,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 child: Container(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: AddTaskScreen(
-                    addToTaskCallback: (value) {
-                      setState(() {
-                        tasks.add(Task(name: value));
-                      });
-
-                      Navigator.pop(context);
-                    },
-                  ),
+                  child: AddTaskScreen(),
                 ),
               ),
             );
@@ -77,7 +71,7 @@ class _TasksScreenState extends State<TasksScreen> {
                         fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    '12 tasks',
+                    '${data.taskCount} tasks',
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ],
@@ -93,9 +87,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: TaskList(
-                  tasks: tasks,
-                ),
+                child: TaskList(),
               ),
             ),
           ],
